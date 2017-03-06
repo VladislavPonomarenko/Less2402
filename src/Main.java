@@ -41,6 +41,7 @@ class Room extends Thread {
 
             if (random.nextInt(5) == 1) {
                 if (Visitor == 0 && Doctor == 0) {
+                    synchronized (this){
                     Doctor doctor = new Doctor();
                     doctor.start();
                     Doctor++;
@@ -54,7 +55,7 @@ class Room extends Thread {
                     Doctor--;
                     System.out.println("Doctor: " + Doctor + " | Visitor: " + Visitor);
                 }
-            }
+            }}
 
             if (random.nextBoolean()) {
                 if (Visitor <= 4 && Doctor == 0 || Visitor >= 0) {
