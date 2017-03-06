@@ -1,64 +1,17 @@
 import java.util.Random;
 
-/**
- * Created by wp-1-09 on 24.02.2017.
- */
+
 public class Main {
-    private static int Doctor = 0;
-    private static int Visitor = 0;
 
-    public static void main(String[] args) {
-
-        for (int c = 0; c < 30; c++) {
-            Random random = new Random();
-            int number = random.nextInt(5);
-
-
-            if (number == 1) {
-                if (Visitor == 0 && Doctor == 0) {
-                    Doctor doctor = new Doctor();
-                    doctor.start();
-                    Doctor++;
-                  //  System.out.println("Doctor: "+Doctor);
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Doctor--;
-                   // System.out.println("Doctor: "+Doctor);
-                }
-            }
-
-            if (random.nextBoolean()) {
-                if (Visitor <= 4 && Doctor == 0 && Visitor>=0) {
-                    Visitor visitor = new Visitor();
-                    visitor.start();
-                    Visitor++;
-                  //  System.out.println("Visitor: "+Visitor);
-                    try {
-                      //  if(Visitor==3){Visitor=Visitor-3;}
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                   // Visitor--;
-                  //  System.out.println("Visitor: "+Visitor);
-                }
-            }
-        }
-        System.out.println("Doctor: "+Doctor);
-        System.out.println("Visitor: "+Visitor);
+    public static void main(String[] args) throws InterruptedException {
+        Room room = new Room();
+        room.start();
     }
 }
 
 class Doctor extends Thread {
     @Override
     public void run() {
-        try {
-            sleep(200);        //Приостанавливает поток на 1 секунду
-        } catch (InterruptedException e) {
-        }
 
     }
 }
@@ -66,10 +19,83 @@ class Doctor extends Thread {
 class Visitor extends Thread {
     @Override
     public void run() {
-        try {
-            sleep(200);        //Приостанавливает поток на 1 секунду
-        } catch (InterruptedException e) {
-        }
 
+    }
+}
+
+class Room extends Thread {
+    private static int Doctor = 0;
+    private static int Visitor = 0;
+    private static int countForNumber = 1;
+    private static int countForVisitor = 0;
+
+    @Override
+    public void run() {
+
+        do {
+            Random random = new Random();
+
+
+            System.out.println("Room №" + countForNumber);
+
+
+            if (random.nextInt(5) == 1) {
+                if (Visitor == 0 && Doctor == 0) {
+                    Doctor doctor = new Doctor();
+                    doctor.start();
+                    Doctor++;
+                    System.out.println("Doctor: " + Doctor + " | Visitor: " + Visitor);
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    Doctor--;
+                    System.out.println("Doctor: " + Doctor + " | Visitor: " + Visitor);
+                }
+            }
+
+            if (random.nextBoolean()) {
+                if (Visitor <= 4 && Doctor == 0 || Visitor >= 0) {
+                    Visitor visitor = new Visitor();
+                    visitor.start();
+                    Visitor++;
+                    System.out.println("Doctor: " + Doctor + " | Visitor: " + Visitor);
+
+                    if (countForVisitor==2 && Visitor>=2) {
+                        Visitor =0;
+                        System.out.println("Doctor: " + Doctor + " | Visitor: " + Visitor);
+                        countForVisitor=1;
+
+                    }
+
+                    if (Visitor == 4) {
+                        Visitor = Visitor - 2;
+                        System.out.println("Doctor: " + Doctor + " | Visitor: " + Visitor);
+                        countForVisitor=2;
+
+                    }
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            System.out.println("Doctor: " + Doctor + " | Visitor: " + Visitor);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (countForNumber == 10) {
+                countForNumber = 1;
+            } else {
+                countForNumber++;
+            }
+        } while (true);
     }
 }
