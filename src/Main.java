@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        for (int c = 0; c < 20; c++) {
+        for (int c = 0; c < 30; c++) {
             Random random = new Random();
             int number = random.nextInt(5);
 
@@ -37,8 +37,8 @@ public class Main {
                     Visitor++;
                   //  System.out.println("Visitor: "+Visitor);
                     try {
-                        if(Visitor==3){Visitor=Visitor-3;}
-                        Thread.sleep(500);
+                      //  if(Visitor==3){Visitor=Visitor-3;}
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -56,7 +56,7 @@ class Doctor extends Thread {
     @Override
     public void run() {
         try {
-            sleep(500);        //Приостанавливает поток на 1 секунду
+            sleep(200);        //Приостанавливает поток на 1 секунду
         } catch (InterruptedException e) {
         }
 
@@ -67,7 +67,7 @@ class Visitor extends Thread {
     @Override
     public void run() {
         try {
-            sleep(500);        //Приостанавливает поток на 1 секунду
+            sleep(200);        //Приостанавливает поток на 1 секунду
         } catch (InterruptedException e) {
         }
 
